@@ -51,6 +51,7 @@ public class BorrowUC_CTL implements ICardReaderListener,
 
 		this.display = display;
 		this.ui = new BorrowUC_UI(this);
+		this.memberDAO = memberDAO;
 		state = EBorrowState.CREATED;
 	}
 	
@@ -75,7 +76,6 @@ public class BorrowUC_CTL implements ICardReaderListener,
 		throw new RuntimeException("Not implemented yet");
 	}
 
-	
 	private void setState(EBorrowState state) {
 		throw new RuntimeException("Not implemented yet");
 	}
