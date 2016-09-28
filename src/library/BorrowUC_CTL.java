@@ -52,6 +52,7 @@ public class BorrowUC_CTL implements ICardReaderListener,
 		this.display = display;
 		this.ui = new BorrowUC_UI(this);
 		this.memberDAO = memberDAO;
+		this.scanner = scanner;
 		state = EBorrowState.CREATED;
 	}
 	
@@ -66,10 +67,11 @@ public class BorrowUC_CTL implements ICardReaderListener,
 
 	@Override
 	public void cardSwiped(int memberID) {
-		memberDAO.getMemberByID(memberID);
+		IMember member = memberDAO.getMemberByID(memberID);
+		if (member != null) {
+			scanner.setEnabled(true);
+		}
 	}
-	
-	
 	
 	@Override
 	public void bookScanned(int barcode) {
