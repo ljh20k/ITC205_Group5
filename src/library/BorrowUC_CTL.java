@@ -44,7 +44,6 @@ public class BorrowUC_CTL implements ICardReaderListener,
 	
 	private JPanel previous;
 
-
 	public BorrowUC_CTL(ICardReader reader, IScanner scanner, 
 			IPrinter printer, IDisplay display,
 			IBookDAO bookDAO, ILoanDAO loanDAO, IMemberDAO memberDAO ) {
