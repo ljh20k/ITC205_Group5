@@ -33,7 +33,7 @@ public class Main implements IMainListener {
 		printer = new Printer();
 		display = new Display();
 		
-		//setupTestData();
+//		setupTestData();
 	}
 
 
@@ -49,6 +49,8 @@ public class Main implements IMainListener {
 	public void borrowBooks() {
 		BorrowUC_CTL ctl = new BorrowUC_CTL(reader, scanner, printer, display, 
 				 null, null, null);
+		reader.setEnabled(true);
+		reader.addListener(ctl);
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	ctl.initialise();
