@@ -1,6 +1,7 @@
 package library;
 
 import library.daos.BookDao;
+import library.daos.LoanDao;
 import library.daos.MemberDao;
 import library.hardware.CardReader;
 import library.hardware.Display;
@@ -36,6 +37,7 @@ public class Main implements IMainListener {
 		display = new Display();
 		memberDAO = new MemberDao();
 		bookDAO = new BookDao();
+		loanDAO = new LoanDao();
 		setupTestData();
 	}
 
@@ -61,7 +63,6 @@ public class Main implements IMainListener {
         });		
 	}
 
-	
 	private void setupTestData() {
         IBook[] book = new IBook[15];
 		IMember[] member = new IMember[6];
@@ -89,36 +90,37 @@ public class Main implements IMainListener {
 		member[4] = memberDAO.addMember("fName4", "lName4", "0005", "email4");
 		member[5] = memberDAO.addMember("fName5", "lName5", "0006", "email5");
 		
-//		Calendar cal = Calendar.getInstance();
-//		Date now = cal.getTime();
-//
-//		//create a member with overdue loans
-//		for (int i=0; i<2; i++) {
-//			ILoan loan = loanDAO.createLoan(member[1], book[i]);
-//			loanDAO.commitLoan(loan);
-//		}
-//		cal.setTime(now);
-//		cal.add(Calendar.DATE, ILoan.LOAN_PERIOD + 1);
-//		Date checkDate = cal.getTime();
-//		loanDAO.updateOverDueStatus(checkDate);
-//
-//		//create a member with maxed out unpaid fines
-//		member[2].addFine(10.0f);
-//
-//		//create a member with maxed out loans
-//		for (int i=2; i<7; i++) {
-//			ILoan loan = loanDAO.createLoan(member[3], book[i]);
-//			loanDAO.commitLoan(loan);
-//		}
-//
-//		//a member with a fine, but not over the limit
-//		member[4].addFine(5.0f);
-//
-//		//a member with a couple of loans but not over the limit
-//		for (int i=7; i<9; i++) {
-//			ILoan loan = loanDAO.createLoan(member[5], book[i]);
-//			loanDAO.commitLoan(loan);
-//		}
+		Calendar cal = Calendar.getInstance();
+		Date now = cal.getTime();
+
+		//create a member with overdue loans
+		for (int i=0; i<2; i++) {
+			ILoan loan = loanDAO.createLoan(member[1], book[i]);
+			loanDAO.commitLoan(loan);
+		}
+		cal.setTime(now);
+		cal.add(Calendar.DATE, ILoan.LOAN_PERIOD + 1);
+
+		Date checkDate = cal.getTime();
+		loanDAO.updateOverDueStatus(checkDate);
+
+		//create a member with maxed out unpaid fines
+		member[2].addFine(10.0f);
+
+		//create a member with maxed out loans
+		for (int i=2; i<7; i++) {
+			ILoan loan = loanDAO.createLoan(member[3], book[i]);
+			loanDAO.commitLoan(loan);
+		}
+
+		//a member with a fine, but not over the limit
+		member[4].addFine(5.0f);
+
+		//a member with a couple of loans but not over the limit
+		for (int i=7; i<9; i++) {
+			ILoan loan = loanDAO.createLoan(member[5], book[i]);
+			loanDAO.commitLoan(loan);
+		}
 	}
 
 	
