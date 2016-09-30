@@ -4,42 +4,41 @@ import java.util.List;
 
 public interface IMember {
 	
-	public static final int   LOAN_LIMIT = 5;
+	static final int   LOAN_LIMIT = 5;
 	
-	public static final float FINE_LIMIT = 10.0f;	
-	
-	
-	public boolean hasOverDueLoans();
-	
-	public boolean hasReachedLoanLimit();
-	
-	public boolean hasFinesPayable();
-	
-	public boolean hasReachedFineLimit();
-	
-	public float   getFineAmount();
-	
-	public void    addFine(float fine);
+	static final float FINE_LIMIT = 10.0f;
 
-	public void    payFine(float payment);
+	boolean hasOverDueLoans();
 	
-	public void    addLoan(ILoan loan);
+	boolean hasReachedLoanLimit();
 	
-	public List<ILoan> getLoans();
+	boolean hasFinesPayable();
 	
-	public void    removeLoan(ILoan loan);
+	boolean hasReachedFineLimit();
 	
-	public EMemberState   getState();
+	float   getFineAmount();
 	
-	public String  getFirstName();
+	void    addFine(float fine);
+
+	void    payFine(float payment);
 	
-	public String  getLastName();
+	void    addLoan(ILoan loan);
 	
-	public String  getContactPhone();
+	List<ILoan> getLoans();
 	
-	public String  getEmailAddress();
+	void    removeLoan(ILoan loan);
 	
-	public int     getID();
+	EMemberState   getState();
+	
+	String  getFirstName();
+	
+	String  getLastName();
+	
+	String  getContactPhone();
+	
+	String  getEmailAddress();
+	
+	int     getID();
 	
 
 }

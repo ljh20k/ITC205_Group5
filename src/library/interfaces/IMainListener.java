@@ -2,6 +2,6 @@ package library.interfaces;
 
 public interface IMainListener {
 
-	public void borrowBooks();
+	void borrowBooks();
 
 }

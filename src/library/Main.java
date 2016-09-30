@@ -35,7 +35,6 @@ public class Main implements IMainListener {
 		display = new Display();
 		memberDAO = new MemberDao(new MemberHelper());
 		bookDAO = new BookDao(new BookHelper());
-//		bookDAO = new BookDao();
 		loanDAO = new LoanDao(new LoanHelper());
 		setupTestData();
 	}

@@ -23,7 +23,6 @@ public class BorrowUC_UI extends JPanel implements IBorrowUI {
 	private EBorrowState state;
 	private Map<EBorrowState,IBorrowUI> panels;
 
-	
 	public BorrowUC_UI(IBorrowUIListener listener) {
 		this.listener = listener;
 		this.panels = new HashMap<EBorrowState,IBorrowUI>();		
@@ -145,6 +144,5 @@ public class BorrowUC_UI extends JPanel implements IBorrowUI {
 		IBorrowUI ui = panels.get(state);
 		ui.displayErrorMessage(errorMesg);		
 	}
-
 
 }

@@ -2,6 +2,6 @@ package library.interfaces.hardware;
 
 public interface IPrinter {
 	
-	public void print(String printData);
+	void print(String printData);
 	
 }

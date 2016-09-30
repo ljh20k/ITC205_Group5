@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 public interface IDisplay {
 	
-	public JPanel getDisplay();
-	public void setDisplay(JPanel panel, String identifier);
+	JPanel getDisplay();
+	void setDisplay(JPanel panel, String identifier);
 	
 }

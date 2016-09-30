@@ -2,26 +2,26 @@ package library.interfaces.entities;
 
 public interface IBook {
 	
-	public void borrow(ILoan loan);
+	void borrow(ILoan loan);
 	
-	public ILoan getLoan();
+	ILoan getLoan();
 	
-	public void returnBook(boolean damaged);
+	void returnBook(boolean damaged);
 	
-	public void lose();
+	void lose();
 	
-	public void repair();
+	void repair();
 	
-	public void dispose();	
+	void dispose();
 	
-	public EBookState getState();
+	EBookState getState();
 	
-	public String getAuthor();
+	String getAuthor();
 	
-	public String getTitle();
+	String getTitle();
 	
-	public String getCallNumber();
+	String getCallNumber();
 	
-	public int getID();
+	int getID();
 
 }

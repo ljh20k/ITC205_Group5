@@ -2,8 +2,8 @@ package library.interfaces.hardware;
 
 public interface IScanner {
 	
-	public void addListener(IScannerListener listener);
+	void addListener(IScannerListener listener);
 	
-	public void setEnabled(boolean enabled);
+	void setEnabled(boolean enabled);
 
 }

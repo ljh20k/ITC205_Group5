@@ -4,22 +4,21 @@ import java.util.Date;
 
 public interface ILoan {
 	
-	public static final int LOAN_PERIOD = 14;
+	static final int LOAN_PERIOD = 14;
+
+	void commit(int id);
 	
+	void complete();
 	
-	public void commit(int id);
+	boolean isOverDue();
 	
-	public void complete();
+	boolean checkOverDue(Date currentDate);
 	
-	public boolean isOverDue();
+	IMember getBorrower();
 	
-	public boolean checkOverDue(Date currentDate);
+	IBook getBook();
 	
-	public IMember getBorrower();
-	
-	public IBook getBook();
-	
-	public int getID();
+	int getID();
 	
 
 }

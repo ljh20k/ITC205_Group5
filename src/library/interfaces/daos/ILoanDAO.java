@@ -9,23 +9,23 @@ import library.interfaces.entities.IMember;
 
 public interface ILoanDAO {
 		
-	public ILoan createLoan(IMember borrower, IBook book);
+	ILoan createLoan(IMember borrower, IBook book);
 
-	public void commitLoan(ILoan loan);
+	void commitLoan(ILoan loan);
 	
-	public ILoan getLoanByID(int id);
+	ILoan getLoanByID(int id);
 	
-	public ILoan getLoanByBook(IBook book);
+	ILoan getLoanByBook(IBook book);
 	
-	public List<ILoan> listLoans();
+	List<ILoan> listLoans();
 	
-	public List<ILoan> findLoansByBorrower(IMember borrower);
+	List<ILoan> findLoansByBorrower(IMember borrower);
 
-	public List<ILoan> findLoansByBookTitle(String title);
+	List<ILoan> findLoansByBookTitle(String title);
 	
-	public void updateOverDueStatus(Date currentDate);
+	void updateOverDueStatus(Date currentDate);
 
-	public List<ILoan> findOverDueLoans();
+	List<ILoan> findOverDueLoans();
 
 }
 

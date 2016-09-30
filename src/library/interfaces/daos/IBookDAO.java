@@ -6,16 +6,16 @@ import library.interfaces.entities.IBook;
 
 public interface IBookDAO {
 	
-	public IBook addBook(String author, String title, String callNo);
+	IBook addBook(String author, String title, String callNo);
 	
-	public IBook getBookByID(int id);
+	IBook getBookByID(int id);
 	
-	public List<IBook> listBooks();
+	List<IBook> listBooks();
 	
-	public List<IBook> findBooksByAuthor(String author);
+	List<IBook> findBooksByAuthor(String author);
 
-	public List<IBook> findBooksByTitle(String title);
+	List<IBook> findBooksByTitle(String title);
 	
-	public List<IBook> findBooksByAuthorTitle(String author, String title);
+	List<IBook> findBooksByAuthorTitle(String author, String title);
 
 }
