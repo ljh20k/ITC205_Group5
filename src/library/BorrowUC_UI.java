@@ -18,10 +18,10 @@ import library.panels.borrow.SwipeCardPanel;
 public class BorrowUC_UI extends JPanel implements IBorrowUI {
 
 	private static final long serialVersionUID = 1L;
-	@SuppressWarnings("unused")
 	private IBorrowUIListener listener;
 	private EBorrowState state;
 	private Map<EBorrowState,IBorrowUI> panels;
+	private static /* synthetic */ int[] $SWITCH_TABLE$library$interfaces$EBorrowState;
 
 	public BorrowUC_UI(IBorrowUIListener listener) {
 		this.listener = listener;
@@ -138,11 +138,49 @@ public class BorrowUC_UI extends JPanel implements IBorrowUI {
 		ui.displayConfirmingLoan(loanDetails);		
 	}
 
-	
 	@Override
 	public void displayErrorMessage(String errorMesg) {
 		IBorrowUI ui = panels.get(state);
-		ui.displayErrorMessage(errorMesg);		
+		ui.displayErrorMessage(errorMesg);
+	}
+
+	static /* synthetic */ int[] $SWITCH_TABLE$library$interfaces$EBorrowState() {
+		int[] arrn;
+		int[] arrn2 = $SWITCH_TABLE$library$interfaces$EBorrowState;
+		if (arrn2 != null) {
+			return arrn2;
+		}
+		arrn = new int[EBorrowState.values().length];
+		try {
+			arrn[EBorrowState.BORROWING_RESTRICTED.ordinal()] = 6;
+		}
+		catch (NoSuchFieldError v1) {}
+		try {
+			arrn[EBorrowState.CANCELLED.ordinal()] = 7;
+		}
+		catch (NoSuchFieldError v2) {}
+		try {
+			arrn[EBorrowState.COMPLETED.ordinal()] = 5;
+		}
+		catch (NoSuchFieldError v3) {}
+		try {
+			arrn[EBorrowState.CONFIRMING_LOANS.ordinal()] = 4;
+		}
+		catch (NoSuchFieldError v4) {}
+		try {
+			arrn[EBorrowState.CREATED.ordinal()] = 1;
+		}
+		catch (NoSuchFieldError v5) {}
+		try {
+			arrn[EBorrowState.INITIALIZED.ordinal()] = 2;
+		}
+		catch (NoSuchFieldError v6) {}
+		try {
+			arrn[EBorrowState.SCANNING_BOOKS.ordinal()] = 3;
+		}
+		catch (NoSuchFieldError v7) {}
+		$SWITCH_TABLE$library$interfaces$EBorrowState = arrn;
+		return $SWITCH_TABLE$library$interfaces$EBorrowState;
 	}
 
 }

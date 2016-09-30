@@ -37,12 +37,11 @@ public class BorrowUC_CTL implements ICardReaderListener,
 	private IBookDAO bookDAO;
 	private IMemberDAO memberDAO;
 	private ILoanDAO loanDAO;
-	
 	private List<IBook> bookList;
 	private List<ILoan> loanList;
 	private IMember borrower;
-	
 	private JPanel previous;
+	private static /* synthetic */ int[] $SWITCH_TABLE$library$interfaces$EBorrowState;
 
 	public BorrowUC_CTL(ICardReader reader, IScanner scanner, 
 			IPrinter printer, IDisplay display,
@@ -58,12 +57,14 @@ public class BorrowUC_CTL implements ICardReaderListener,
 		this.display = display;
 		this.bookDAO = bookDAO;
 		this.memberDAO = memberDAO;
+		this.loanDAO = loanDAO;
 		state = EBorrowState.CREATED;
 	}
 	
 	public void initialise() {
 		previous = display.getDisplay();
-		display.setDisplay((JPanel) ui, "Borrow UI");		
+		display.setDisplay((JPanel) ui, "Borrow UI");
+		setState(EBorrowState.INITIALIZED);
 	}
 	
 	public void close() {
@@ -72,10 +73,48 @@ public class BorrowUC_CTL implements ICardReaderListener,
 
 	@Override
 	public void cardSwiped(int memberID) {
-		IMember member = memberDAO.getMemberByID(memberID);
-		if (member != null) {
-			scanner.setEnabled(true);
+		boolean borrowing_restricted;
+		float amountOwing;
+		System.out.println("cardSwiped: got " + memberID);
+		if (!this.state.equals((Object)EBorrowState.INITIALIZED)) {
+			throw new RuntimeException(String.format("BorrowUC_CTL : cardSwiped : illegal operation in state: %s", new Object[]{this.state}));
 		}
+		this.borrower = this.memberDAO.getMemberByID(memberID);
+		if (this.borrower == null) {
+			this.ui.displayErrorMessage(String.format("Member ID %d not found", memberID));
+			return;
+		}
+		boolean overdue = this.borrower.hasOverDueLoans();
+		boolean atLoanLimit = this.borrower.hasReachedLoanLimit();
+		boolean hasFines = this.borrower.hasFinesPayable();
+		boolean overFineLimit = this.borrower.hasReachedFineLimit();
+		boolean bl = borrowing_restricted = overdue || atLoanLimit || overFineLimit;
+		if (borrowing_restricted) {
+			this.setState(EBorrowState.BORROWING_RESTRICTED);
+		} else {
+			this.setState(EBorrowState.SCANNING_BOOKS);
+		}
+		int mID = this.borrower.getID();
+		String mName = String.valueOf(this.borrower.getFirstName()) + " " + this.borrower.getLastName();
+		String mContact = this.borrower.getContactPhone();
+		this.ui.displayMemberDetails(mID, mName, mContact);
+		if (hasFines) {
+			amountOwing = this.borrower.getFineAmount();
+			this.ui.displayOutstandingFineMessage(amountOwing);
+		}
+		if (overdue) {
+			this.ui.displayOverDueMessage();
+		}
+		if (atLoanLimit) {
+			this.ui.displayAtLoanLimitMessage();
+		}
+		if (overFineLimit) {
+			System.out.println("State: " + (Object)((Object)this.state));
+			amountOwing = this.borrower.getFineAmount();
+			this.ui.displayOverFineLimitMessage(amountOwing);
+		}
+		String loanString = this.buildLoanListDisplay(this.borrower.getLoans());
+		this.ui.displayExistingLoan(loanString);
 	}
 	
 	@Override
@@ -110,8 +149,57 @@ public class BorrowUC_CTL implements ICardReaderListener,
 
 
 	private void setState(EBorrowState state) {
-
-		throw new RuntimeException("Not implemented yet");
+		System.out.println("Setting state: " + (Object)((Object)state));
+		this.state = state;
+		this.ui.setState(state);
+		switch (BorrowUC_CTL.$SWITCH_TABLE$library$interfaces$EBorrowState()[state.ordinal()]) {
+			case 2: {
+				this.reader.setEnabled(true);
+				this.scanner.setEnabled(false);
+				break;
+			}
+			case 3: {
+				this.reader.setEnabled(false);
+				this.scanner.setEnabled(true);
+				this.bookList = new ArrayList<IBook>();
+				this.loanList = new ArrayList<ILoan>();
+				this.scanCount = this.borrower.getLoans().size();
+				this.ui.displayScannedBookDetails("");
+				this.ui.displayPendingLoan("");
+				break;
+			}
+			case 4: {
+				this.reader.setEnabled(false);
+				this.scanner.setEnabled(false);
+				this.ui.displayConfirmingLoan(this.buildLoanListDisplay(this.loanList));
+				break;
+			}
+			case 5: {
+				this.reader.setEnabled(false);
+				this.scanner.setEnabled(false);
+				for (ILoan loan : this.loanList) {
+					this.loanDAO.commitLoan(loan);
+				}
+				this.printer.print(this.buildLoanListDisplay(this.loanList));
+				this.close();
+				break;
+			}
+			case 7: {
+				this.reader.setEnabled(false);
+				this.scanner.setEnabled(false);
+				this.close();
+				break;
+			}
+			case 6: {
+				this.reader.setEnabled(false);
+				this.scanner.setEnabled(false);
+				this.ui.displayErrorMessage(String.format("Member %d cannot borrow at this time.", this.borrower.getID()));
+				break;
+			}
+			default: {
+				throw new RuntimeException("Unknown state");
+			}
+		}
 	}
 
 	@Override
@@ -144,4 +232,42 @@ public class BorrowUC_CTL implements ICardReaderListener,
 		return bld.toString();		
 	}
 
+	static /* synthetic */ int[] $SWITCH_TABLE$library$interfaces$EBorrowState() {
+		int[] arrn;
+		int[] arrn2 = $SWITCH_TABLE$library$interfaces$EBorrowState;
+		if (arrn2 != null) {
+			return arrn2;
+		}
+		arrn = new int[EBorrowState.values().length];
+		try {
+			arrn[EBorrowState.BORROWING_RESTRICTED.ordinal()] = 6;
+		}
+		catch (NoSuchFieldError v1) {}
+		try {
+			arrn[EBorrowState.CANCELLED.ordinal()] = 7;
+		}
+		catch (NoSuchFieldError v2) {}
+		try {
+			arrn[EBorrowState.COMPLETED.ordinal()] = 5;
+		}
+		catch (NoSuchFieldError v3) {}
+		try {
+			arrn[EBorrowState.CONFIRMING_LOANS.ordinal()] = 4;
+		}
+		catch (NoSuchFieldError v4) {}
+		try {
+			arrn[EBorrowState.CREATED.ordinal()] = 1;
+		}
+		catch (NoSuchFieldError v5) {}
+		try {
+			arrn[EBorrowState.INITIALIZED.ordinal()] = 2;
+		}
+		catch (NoSuchFieldError v6) {}
+		try {
+			arrn[EBorrowState.SCANNING_BOOKS.ordinal()] = 3;
+		}
+		catch (NoSuchFieldError v7) {}
+		$SWITCH_TABLE$library$interfaces$EBorrowState = arrn;
+		return $SWITCH_TABLE$library$interfaces$EBorrowState;
+	}
 }
