@@ -1,9 +1,6 @@
 package library;
 
-import library.daos.BookDao;
-import library.daos.BookHelper;
-import library.daos.LoanDao;
-import library.daos.MemberDao;
+import library.daos.*;
 import library.hardware.CardReader;
 import library.hardware.Display;
 import library.hardware.Printer;
@@ -39,7 +36,7 @@ public class Main implements IMainListener {
 		memberDAO = new MemberDao();
 		bookDAO = new BookDao(new BookHelper());
 //		bookDAO = new BookDao();
-		loanDAO = new LoanDao();
+		loanDAO = new LoanDao(new LoanHelper());
 		setupTestData();
 	}
 
