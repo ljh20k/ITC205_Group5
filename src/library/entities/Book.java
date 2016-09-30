@@ -34,35 +34,57 @@ public class Book implements IBook{
 
     @Override
     public void borrow(ILoan loan) {
+        if (loan == null) {
+            throw new IllegalArgumentException(String.format("Book: borrow : Bad parameter: loan cannot be null", new Object[0]));
+        }
+        if (this.state != EBookState.AVAILABLE) {
+            throw new RuntimeException(String.format("Illegal operation in state : %s", new Object[]{this.state}));
+        }
+        this.loan = loan;
+        this.state = EBookState.ON_LOAN;
     }
 
     @Override
     public ILoan getLoan() {
-        return null;
+        return this.loan;
     }
 
     @Override
     public void returnBook(boolean damaged) {
+        if (this.state != EBookState.ON_LOAN && this.state != EBookState.LOST) {
+            throw new RuntimeException(String.format("Illegal operation in state : %s", new Object[]{this.state}));
+        }
+        this.loan = null;
+        this.state = damaged ? EBookState.DAMAGED : EBookState.AVAILABLE;
     }
 
     @Override
     public void lose() {
-
+        if (this.state != EBookState.ON_LOAN) {
+            throw new RuntimeException(String.format("Illegal operation in state : %s", new Object[]{this.state}));
+        }
+        this.state = EBookState.LOST;
     }
 
     @Override
     public void repair() {
-
+        if (this.state != EBookState.DAMAGED) {
+            throw new RuntimeException(String.format("Illegal operation in state : %s", new Object[]{this.state}));
+        }
+        this.state = EBookState.AVAILABLE;
     }
 
     @Override
     public void dispose() {
-
+        if (this.state != EBookState.AVAILABLE && this.state != EBookState.DAMAGED && this.state != EBookState.LOST) {
+            throw new RuntimeException(String.format("Illegal operation in state : %s", new Object[]{this.state}));
+        }
+        this.state = EBookState.DISPOSED;
     }
 
     @Override
     public EBookState getState() {
-        return null;
+        return this.state;
     }
 
     @Override
@@ -99,5 +121,10 @@ public class Book implements IBook{
 
     public void setCallNumber(String callNumber) {
         this.callNumber = callNumber;
+    }
+
+    //toString for printing out
+    public String toString() {
+        return String.format("Id: %d\nAuthor: %s\nTitle: %s\nCall Number %s", this.id, this.author, this.title, this.callNumber);
     }
 }

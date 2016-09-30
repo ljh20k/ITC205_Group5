@@ -4,9 +4,7 @@ import library.interfaces.daos.IBookDAO;
 import library.interfaces.daos.IBookHelper;
 import library.interfaces.entities.IBook;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BookDao implements IBookDAO {
     private int nextId;
@@ -53,27 +51,55 @@ public class BookDao implements IBookDAO {
 
     @Override
     public IBook getBookByID(int id) {
+        if (this.bookMap.containsKey(id)) {
+            return this.bookMap.get(id);
+        }
         return null;
     }
 
     @Override
     public List<IBook> listBooks() {
-        return null;
+        ArrayList<IBook> list = new ArrayList<IBook>(this.bookMap.values());
+        return Collections.unmodifiableList(list);
     }
 
     @Override
     public List<IBook> findBooksByAuthor(String author) {
-        return null;
+        if (author == null || author.isEmpty()) {
+            throw new IllegalArgumentException(String.format("BookDAO : findBooksByAuthor : author cannot be null or blank", new Object[0]));
+        }
+        ArrayList<IBook> list = new ArrayList<IBook>();
+        for (IBook b : this.bookMap.values()) {
+            if (!author.equals(b.getAuthor())) continue;
+            list.add(b);
+        }
+        return Collections.unmodifiableList(list);
     }
 
     @Override
     public List<IBook> findBooksByTitle(String title) {
-        return null;
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException(String.format("BookDAO : findBooksByAuthor : author cannot be null or blank", new Object[0]));
+        }
+        ArrayList<IBook> list = new ArrayList<IBook>();
+        for (IBook b : this.bookMap.values()) {
+            if (!title.equals(b.getTitle())) continue;
+            list.add(b);
+        }
+        return Collections.unmodifiableList(list);
     }
 
     @Override
     public List<IBook> findBooksByAuthorTitle(String author, String title) {
-        return null;
+        if (title == null || title.isEmpty() || author == null || author.isEmpty()) {
+            throw new IllegalArgumentException(String.format("BookDAO : findBooksByAuthor : author and title cannot be null or blank", new Object[0]));
+        }
+        ArrayList<IBook> list = new ArrayList<IBook>();
+        for (IBook b : this.bookMap.values()) {
+            if (!author.equals(b.getAuthor()) || !title.equals(b.getTitle())) continue;
+            list.add(b);
+        }
+        return Collections.unmodifiableList(list);
     }
 
     private int getNextId() {
