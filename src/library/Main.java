@@ -20,119 +20,119 @@ import library.panels.MainPanel;
 
 public class Main implements IMainListener {
 
-	private CardReader reader;
-	private Scanner scanner;
-	private Printer printer;
-	private Display display;
-	private IBookDAO bookDAO;
-	private ILoanDAO loanDAO;
-	private IMemberDAO memberDAO;
-	
-	public Main() {
-		reader = new CardReader();
-		scanner = new Scanner();
-		printer = new Printer();
-		display = new Display();
-		memberDAO = new MemberDao(new MemberHelper());
-		bookDAO = new BookDao(new BookHelper());
-		loanDAO = new LoanDao(new LoanHelper());
-		setupTestData();
-	}
+    private CardReader reader;
+    private Scanner scanner;
+    private Printer printer;
+    private Display display;
+    private IBookDAO bookDAO;
+    private ILoanDAO loanDAO;
+    private IMemberDAO memberDAO;
+
+    public Main() {
+        reader = new CardReader();
+        scanner = new Scanner();
+        printer = new Printer();
+        display = new Display();
+        memberDAO = new MemberDao(new MemberHelper());
+        bookDAO = new BookDao(new BookHelper());
+        loanDAO = new LoanDao(new LoanHelper());
+        setupTestData();
+    }
 
 
-	public void showGUI() {		
-		reader.setVisible(true);
-		scanner.setVisible(true);
-		printer.setVisible(true);
-		display.setVisible(true);
-	}
+    public void showGUI() {
+        reader.setVisible(true);
+        scanner.setVisible(true);
+        printer.setVisible(true);
+        display.setVisible(true);
+    }
 
-	
-	@Override
-	public void borrowBooks() {
-		BorrowUC_CTL ctl = new BorrowUC_CTL(this.reader, this.scanner, this.printer, this.display,
-				 this.bookDAO, this.loanDAO, this.memberDAO);
-		reader.setEnabled(true);
-		reader.addListener(ctl);
+
+    @Override
+    public void borrowBooks() {
+        BorrowUC_CTL ctl = new BorrowUC_CTL(this.reader, this.scanner, this.printer, this.display,
+                this.bookDAO, this.loanDAO, this.memberDAO);
+        reader.setEnabled(true);
+        reader.addListener(ctl);
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	ctl.initialise();
+                ctl.initialise();
             }
         });
-	}
+    }
 
-	private void setupTestData() {
+    private void setupTestData() {
         IBook[] book = new IBook[15];
-		IMember[] member = new IMember[6];
-		
-		book[0]  = bookDAO.addBook("author1", "title1", "callNo1");
-		book[1]  = bookDAO.addBook("author1", "title2", "callNo2");
-		book[2]  = bookDAO.addBook("author1", "title3", "callNo3");
-		book[3]  = bookDAO.addBook("author1", "title4", "callNo4");
-		book[4]  = bookDAO.addBook("author2", "title5", "callNo5");
-		book[5]  = bookDAO.addBook("author2", "title6", "callNo6");
-		book[6]  = bookDAO.addBook("author2", "title7", "callNo7");
-		book[7]  = bookDAO.addBook("author2", "title8", "callNo8");
-		book[8]  = bookDAO.addBook("author3", "title9", "callNo9");
-		book[9]  = bookDAO.addBook("author3", "title10", "callNo10");
-		book[10] = bookDAO.addBook("author4", "title11", "callNo11");
-		book[11] = bookDAO.addBook("author4", "title12", "callNo12");
-		book[12] = bookDAO.addBook("author5", "title13", "callNo13");
-		book[13] = bookDAO.addBook("author5", "title14", "callNo14");
-		book[14] = bookDAO.addBook("author5", "title15", "callNo15");
+        IMember[] member = new IMember[6];
 
-		member[0] = memberDAO.addMember("fName0", "lName0", "0001", "email0");
-		member[1] = memberDAO.addMember("fName1", "lName1", "0002", "email1");
-		member[2] = memberDAO.addMember("fName2", "lName2", "0003", "email2");
-		member[3] = memberDAO.addMember("fName3", "lName3", "0004", "email3");
-		member[4] = memberDAO.addMember("fName4", "lName4", "0005", "email4");
-		member[5] = memberDAO.addMember("fName5", "lName5", "0006", "email5");
-		
-		Calendar cal = Calendar.getInstance();
-		Date now = cal.getTime();
+        book[0] = bookDAO.addBook("Hermann Hesse", "Demian", "D3E5M2");
+        book[1] = bookDAO.addBook("Hermann Hesse", "Narcissus and Goldmund", "N5A1R5");
+        book[2] = bookDAO.addBook("Hermann Hesse", "Beneath the Wheel", "B6E7N9");
+        book[3] = bookDAO.addBook("Hermann Hesse", "Knulp: Three Tales From the Life of Knulp", "K4N4U2");
+        book[4] = bookDAO.addBook("Bernard Werber", "Empire of the Ants", "E2M5P2");
+        book[5] = bookDAO.addBook("Bernard Werber", "L'Empire des anges", "L2E5P1");
+        book[6] = bookDAO.addBook("Bernard Werber", "Nous les dieux", "N7O7U2");
+        book[7] = bookDAO.addBook("Bernard Werber", "La Trilogie des Fourmis ", "L2A8T5");
+        book[8] = bookDAO.addBook("Henrik Ibsen", "The Feast at Solhaug", "T1H6E3");
+        book[9] = bookDAO.addBook("Henrik Ibsen", "Peer Gynt", "P2E3E2");
+        book[10] = bookDAO.addBook("Henrik Ibsen", "Catiline", "C6A2T6");
+        book[11] = bookDAO.addBook("Henrik Ibsen", "Little Eyolf", "L9I3T2");
+        book[12] = bookDAO.addBook("Plato", "Trial Of Socrates", "T7R9I8");
+        book[13] = bookDAO.addBook("Plato", "Philosophy Of Plato", "P5H1I8");
+        book[14] = bookDAO.addBook("Plato", "La Republique De Platon", "L2A6R7");
 
-		//create a member with overdue loans
-		for (int i=0; i<2; i++) {
-			ILoan loan = this.loanDAO.createLoan(member[1], book[i]);
-			this.loanDAO.commitLoan(loan);
-		}
-		cal.setTime(now);
-		cal.add(Calendar.DATE, ILoan.LOAN_PERIOD + 1);
+        member[0] = memberDAO.addMember("Ju Hun", "Lee", "045123698", "juhun@hotmail.com");
+        member[1] = memberDAO.addMember("Kamal", "Raj Kandel", "0145782694", "kamal@gmail.com");
+        member[2] = memberDAO.addMember("Amar", "Adhikari", "0985632168", "amar@gmail.com");
+        member[3] = memberDAO.addMember("Matthew", "Arts", "0551479832", "matthew@naver.com");
+        member[4] = memberDAO.addMember("Kate", "Svechnikova", "0695121020", "kate@hotmail.com");
+        member[5] = memberDAO.addMember("Akiko", "Shimomura", "0897545152", "akiko@gmail.com");
 
-		Date checkDate = cal.getTime();
-		loanDAO.updateOverDueStatus(checkDate);
+        Calendar cal = Calendar.getInstance();
+        Date now = cal.getTime();
 
-		//create a member with maxed out unpaid fines
-		member[2].addFine(10.0f);
+        //create a member with overdue loans
+        for (int i = 0; i < 2; i++) {
+            ILoan loan = this.loanDAO.createLoan(member[1], book[i]);
+            this.loanDAO.commitLoan(loan);
+        }
+        cal.setTime(now);
+        cal.add(Calendar.DATE, ILoan.LOAN_PERIOD + 1);
 
-		//create a member with maxed out loans
-		for (int i=2; i<7; i++) {
-			ILoan loan = loanDAO.createLoan(member[3], book[i]);
-			loanDAO.commitLoan(loan);
-		}
+        Date checkDate = cal.getTime();
+        loanDAO.updateOverDueStatus(checkDate);
 
-		//a member with a fine, but not over the limit
-		member[4].addFine(5.0f);
+        //create a member with maxed out unpaid fines
+        member[2].addFine(10.0f);
 
-		//a member with a couple of loans but not over the limit
-		for (int i=7; i<9; i++) {
-			ILoan loan = loanDAO.createLoan(member[5], book[i]);
-			loanDAO.commitLoan(loan);
-		}
-	}
+        //create a member with maxed out loans
+        for (int i = 2; i < 7; i++) {
+            ILoan loan = loanDAO.createLoan(member[3], book[i]);
+            loanDAO.commitLoan(loan);
+        }
 
-	
-	public static void main(String[] args) {
-		
+        //a member with a fine, but not over the limit
+        member[4].addFine(5.0f);
+
+        //a member with a couple of loans but not over the limit
+        for (int i = 7; i < 9; i++) {
+            ILoan loan = loanDAO.createLoan(member[5], book[i]);
+            loanDAO.commitLoan(loan);
+        }
+    }
+
+
+    public static void main(String[] args) {
+
         // start the GUI
-		Main main = new Main();
+        Main main = new Main();
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	main.display.setDisplay(new MainPanel(main), "Main Menu");
+                main.display.setDisplay(new MainPanel(main), "Main Menu");
                 main.showGUI();
             }
         });
-	}
+    }
 
-	
+
 }
