@@ -33,7 +33,7 @@ public class Main implements IMainListener {
 		scanner = new Scanner();
 		printer = new Printer();
 		display = new Display();
-		memberDAO = new MemberDao();
+		memberDAO = new MemberDao(new MemberHelper());
 		bookDAO = new BookDao(new BookHelper());
 //		bookDAO = new BookDao();
 		loanDAO = new LoanDao(new LoanHelper());
