@@ -10,10 +10,30 @@ public class Book implements IBook{
     private String author;
     private String title;
     private String callNumber;
+    private ILoan loan;
+    private EBookState state;
+
+    public Book(String author, String title, String callNumber, int bookID) {
+        if (!this.sane(author, title, callNumber, bookID)) {
+            throw new IllegalArgumentException("Member: constructor : bad parameters");
+        }
+        this.author = author;
+        this.title = title;
+        this.callNumber = callNumber;
+        this.id = bookID;
+        this.state = EBookState.AVAILABLE;
+        this.loan = null;
+    }
+
+    private boolean sane(String author, String title, String callNumber, int bookID) {
+        if (!(author == null || author.isEmpty() || title == null || title.isEmpty() || callNumber == null || callNumber.isEmpty() || bookID <= 0)) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void borrow(ILoan loan) {
-
     }
 
     @Override
@@ -23,7 +43,6 @@ public class Book implements IBook{
 
     @Override
     public void returnBook(boolean damaged) {
-
     }
 
     @Override

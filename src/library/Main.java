@@ -1,6 +1,7 @@
 package library;
 
 import library.daos.BookDao;
+import library.daos.BookHelper;
 import library.daos.LoanDao;
 import library.daos.MemberDao;
 import library.hardware.CardReader;
@@ -36,7 +37,8 @@ public class Main implements IMainListener {
 		printer = new Printer();
 		display = new Display();
 		memberDAO = new MemberDao();
-		bookDAO = new BookDao();
+		bookDAO = new BookDao(new BookHelper());
+//		bookDAO = new BookDao();
 		loanDAO = new LoanDao();
 		setupTestData();
 	}
@@ -52,15 +54,15 @@ public class Main implements IMainListener {
 	
 	@Override
 	public void borrowBooks() {
-		BorrowUC_CTL ctl = new BorrowUC_CTL(reader, scanner, printer, display, 
-				 null, null, memberDAO);
+		BorrowUC_CTL ctl = new BorrowUC_CTL(this.reader, this.scanner, this.printer, this.display,
+				 this.bookDAO, this.loanDAO, this.memberDAO);
 		reader.setEnabled(true);
 		reader.addListener(ctl);
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	ctl.initialise();
             }
-        });		
+        });
 	}
 
 	private void setupTestData() {
@@ -95,8 +97,8 @@ public class Main implements IMainListener {
 
 		//create a member with overdue loans
 		for (int i=0; i<2; i++) {
-			ILoan loan = loanDAO.createLoan(member[1], book[i]);
-			loanDAO.commitLoan(loan);
+			ILoan loan = this.loanDAO.createLoan(member[1], book[i]);
+			this.loanDAO.commitLoan(loan);
 		}
 		cal.setTime(now);
 		cal.add(Calendar.DATE, ILoan.LOAN_PERIOD + 1);
