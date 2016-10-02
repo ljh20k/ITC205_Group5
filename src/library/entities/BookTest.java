@@ -55,41 +55,54 @@ public class BookTest {
     }
 
     @Test
-    public void testBorrowNullException() throws Exception {
+    public void testBorrowNullPointerException() throws Exception {
         //if(loan == null) { throw new RuntimeException(); }
+        System.out.println("----- testBorrowNullPointerException() -----");
         loan = null;
 
         try {
             this.book.borrow(loan);
         } catch(NullPointerException e) {
             assertThat(e, instanceOf(NullPointerException.class));
+            System.out.println("Success: NullPointerException caught !");
         }
+        System.out.println("\n");
     }
 
     @Test
-    public void testBorrowArgumentException() throws Exception {
+    public void testBorrowRuntimeException() throws Exception {
         //if(state != EBookState.Available) { throw new RuntimeException(); }
+        System.out.println("----- testBorrowArgumentException() -----");
         state = EBookState.ON_LOAN;
 
         try {
             book.borrow(loan);
         } catch(RuntimeException e) {
             assertThat(e, instanceOf(RuntimeException.class));
+            System.out.println("Success: RuntimeException caught !");
         }
+        System.out.println("\n");
     }
 
     @Test
     public void testGetLoan() throws Exception {
-        String loan = book.getLoan().toString();
-        System.out.println(book.getLoan().toString());
-        book.setID(1);
-        assertSame(loan,book.getLoan().toString());
-        book.getLoan();
+        try {
+            System.out.println("----- testGetLoan() -----");
+            String expectedResult = book.getLoan().toString();
+            String result = loan.toString();
+            assertEquals(expectedResult,result);
+            System.out.println("Expected Result: \n" + expectedResult);
+            System.out.println("\n");
+            System.out.println("Actual Result: \n" + result);
+        } catch(NullPointerException e) {
+            fail("Fail: Loan is null");
+        }
+        System.out.println("\n");
     }
 
     @Test
     public void testReturnBook() throws Exception {
-
+        book.returnBook();
     }
 
     @Test
