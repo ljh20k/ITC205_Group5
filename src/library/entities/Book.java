@@ -35,7 +35,8 @@ public class Book implements IBook {
     @Override
     public void borrow(ILoan loan) {
         if (loan == null) {
-            throw new IllegalArgumentException(String.format("Book: borrow : Bad parameter: loan cannot be null", new Object[0]));
+//            throw new IllegalArgumentException(String.format("Book: borrow : Bad parameter: loan cannot be null", new Object[0]));
+            throw new NullPointerException();
         }
         if (this.state != EBookState.AVAILABLE) {
             throw new RuntimeException(String.format("Illegal operation in state : %s", new Object[]{this.state}));
