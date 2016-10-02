@@ -17,6 +17,7 @@ public class Loan implements ILoan {
     private Date borrowDate;
     private Date dueDate;
     private ELoanState state;
+
 //    private boolean overDue;
 //    private Calendar dateBorrowed;
 
@@ -121,6 +122,10 @@ public class Loan implements ILoan {
 
     public void setBook(IBook book) {
         this.book = book;
+    }
+
+    public void setState(ELoanState state) {
+        this.state = state;
     }
 
     public String toString() {

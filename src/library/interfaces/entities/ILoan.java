@@ -20,5 +20,9 @@ public interface ILoan {
 
     int getID();
 
+    ELoanState getState();
+
+
+
 
 }
