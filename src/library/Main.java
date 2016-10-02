@@ -39,14 +39,12 @@ public class Main implements IMainListener {
         setupTestData();
     }
 
-
     public void showGUI() {
         reader.setVisible(true);
         scanner.setVisible(true);
         printer.setVisible(true);
         display.setVisible(true);
     }
-
 
     @Override
     public void borrowBooks() {

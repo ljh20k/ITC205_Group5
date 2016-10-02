@@ -124,6 +124,10 @@ public class Book implements IBook {
         this.callNumber = callNumber;
     }
 
+    public void setState(EBookState eBookState) {
+        this.state = eBookState;
+    }
+
     //toString for printing out
     public String toString() {
         return String.format("Id: %d\nAuthor: %s\nTitle: %s\nCall Number %s", this.id, this.author, this.title, this.callNumber);
